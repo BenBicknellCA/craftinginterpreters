@@ -28,9 +28,9 @@ public class GenerateAst {
     String path = outputDir + "/" + baseName + ".java";
     PrintWriter writer = new PrintWriter(path, StandardCharsets.UTF_8);
 
-    writer.println("package com.craftinginterpreters.lox");
+    writer.println("package com.craftinginterpreters.lox;");
     writer.println();
-    writer.println("import java.util.List");
+    writer.println("import java.util.List;");
     writer.println();
     writer.println("abstract class " + baseName + " {");
 
@@ -57,7 +57,7 @@ public class GenerateAst {
     for (String type : types) {
       String typeName = type.split(":")[0].trim();
       writer.println(
-          " R visit" + typeName + baseName + "{" + typeName + " " + baseName.toLowerCase() + ");");
+          " R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
     }
     writer.println(" }");
   }
@@ -74,7 +74,7 @@ public class GenerateAst {
       writer.println(" this." + name + " = " + name + ";");
     }
 
-    writer.println(" }");
+    writer.println("    }");
     // visitor pattern
     writer.println();
     writer.println(" @Override");
