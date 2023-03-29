@@ -62,7 +62,7 @@ public class GenerateAst {
     writer.println("  abstract <R> R accept(Visitor<R> visitor);");
 
     writer.println("//< Appendix II " + baseName.toLowerCase());
-
+    writer.println("}");
     writer.close();
   }
 

@@ -3,25 +3,17 @@ package com.craftinginterpreters.lox;
 import java.util.List;
 
 abstract class Stmt {
-  abstract <R> R accept(Visitor<R> visitor);
-
   interface Visitor<R> {
     R visitBlockStmt(Block stmt);
-
     R visitExpressionStmt(Expression stmt);
-
     R visitIfStmt(If stmt);
-
     R visitPrintStmt(Print stmt);
-
     R visitVarStmt(Var stmt);
   }
 
   // Nested Stmt classes here...
-  // > stmt-block
+//> stmt-block
   static class Block extends Stmt {
-    final List<Stmt> statements;
-
     Block(List<Stmt> statements) {
       this.statements = statements;
     }
@@ -30,12 +22,11 @@ abstract class Stmt {
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitBlockStmt(this);
     }
+
+    final List<Stmt> statements;
   }
-
-  // > stmt-expression
+//> stmt-expression
   static class Expression extends Stmt {
-    final Expr expression;
-
     Expression(Expr expression) {
       this.expression = expression;
     }
@@ -44,13 +35,11 @@ abstract class Stmt {
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitExpressionStmt(this);
     }
-  }
 
-  // > stmt-if
+    final Expr expression;
+  }
+//> stmt-if
   static class If extends Stmt {
-    final Expr condition;
-    final Stmt thenBranch;
-    final Stmt elseBranch;
     If(Expr condition, Stmt thenBranch, Stmt elseBranch) {
       this.condition = condition;
       this.thenBranch = thenBranch;
@@ -61,12 +50,13 @@ abstract class Stmt {
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitIfStmt(this);
     }
+
+    final Expr condition;
+    final Stmt thenBranch;
+    final Stmt elseBranch;
   }
-
-  // > stmt-print
+//> stmt-print
   static class Print extends Stmt {
-    final Expr expression;
-
     Print(Expr expression) {
       this.expression = expression;
     }
@@ -75,13 +65,11 @@ abstract class Stmt {
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitPrintStmt(this);
     }
+
+    final Expr expression;
   }
-
-  // > stmt-var
+//> stmt-var
   static class Var extends Stmt {
-    final Token name;
-    final Expr initializer;
-
     Var(Token name, Expr initializer) {
       this.name = name;
       this.initializer = initializer;
@@ -91,6 +79,11 @@ abstract class Stmt {
     <R> R accept(Visitor<R> visitor) {
       return visitor.visitVarStmt(this);
     }
+
+    final Token name;
+    final Expr initializer;
   }
-  // < Appendix II stmt
+
+  abstract <R> R accept(Visitor<R> visitor);
+//< Appendix II stmt
 }
