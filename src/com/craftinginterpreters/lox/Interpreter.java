@@ -20,8 +20,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return expr.value;
   }
 
-
-
   @Override
   public Object visitGroupingExpr(Expr.Grouping expr) {
     return evaluate(expr.expression);
@@ -95,11 +93,20 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     return null;
   }
 
-
   @Override
   public Void visitPrintStmt(Stmt.Print stmt) {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
+    return null;
+  }
+
+  @Override
+  public Void visitIfStmt(Stmt.If stmt) {
+    if (isTruthy(evaluate(stmt.condition))) {
+      execute(stmt.thenBranch);
+    } else if (stmt.elseBranch != null) {
+      execute(stmt.elseBranch);
+    }
     return null;
   }
 
@@ -137,8 +144,6 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     environment.assign(expr.name, value);
     return value;
   }
-
-
 
   @Override
   public Void visitBlockStmt(Stmt.Block stmt) {

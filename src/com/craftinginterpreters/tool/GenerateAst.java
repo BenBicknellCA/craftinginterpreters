@@ -1,3 +1,4 @@
+// > Representing Code generate-ast
 package com.craftinginterpreters.tool;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.List;
 public class GenerateAst {
   public static void main(String[] args) throws IOException {
     if (args.length != 1) {
-      System.err.println("Usage: generate_ast <output_directory>");
+      System.err.println("Usage: generate_ast <output directory>");
       System.exit(64);
     }
     String outputDir = args[0];
@@ -17,20 +18,22 @@ public class GenerateAst {
         outputDir,
         "Expr",
         Arrays.asList(
-            "Binary : Expr left, Token operator, Expr right",
+            "Assign   : Token name, Expr value",
+            "Binary   : Expr left, Token operator, Expr right",
             "Grouping : Expr expression",
-            "Literal : Object value",
-            "Unary : Token operator, Expr right",
+            "Literal  : Object value",
+            "Unary    : Token operator, Expr right",
             "Variable : Token name"));
+
     defineAst(
         outputDir,
         "Stmt",
         Arrays.asList(
-                "Block : List<Stmt> statements",
-            "Assign : Expr value",
+            "Block      : List<Stmt> statements",
             "Expression : Expr expression",
-            "Print : Expr expression",
-            "Var : Token name, Expr initializer"));
+            "If         : Expr condition, Stmt thenBranch," + " Stmt elseBranch",
+            "Print      : Expr expression",
+            "Var        : Token name, Expr initializer"));
   }
 
   private static void defineAst(String outputDir, String baseName, List<String> types)
@@ -46,57 +49,67 @@ public class GenerateAst {
 
     defineVisitor(writer, baseName, types);
 
+    writer.println();
+    writer.println("  // Nested " + baseName + " classes here...");
+
     for (String type : types) {
       String className = type.split(":")[0].trim();
-      String fields = type.split(":")[1].trim();
+      String fields = type.split(":")[1].trim(); // [robust]
       defineType(writer, baseName, className, fields);
     }
 
     writer.println();
-    writer.println(" abstract <R> R accept(Visitor<R> visitor);");
+    writer.println("  abstract <R> R accept(Visitor<R> visitor);");
 
-    // the AST classes
+    writer.println("//< Appendix II " + baseName.toLowerCase());
 
-    writer.println("}");
     writer.close();
   }
 
   private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
-    writer.println(" interface Visitor<R> {");
+    writer.println("  interface Visitor<R> {");
 
     for (String type : types) {
       String typeName = type.split(":")[0].trim();
       writer.println(
-          " R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
+          "    R visit"
+              + typeName
+              + baseName
+              + "("
+              + typeName
+              + " "
+              + baseName.toLowerCase()
+              + ");");
     }
-    writer.println(" }");
+
+    writer.println("  }");
   }
 
   private static void defineType(
       PrintWriter writer, String baseName, String className, String fieldList) {
-    writer.println(" static class " + className + " extends " + baseName + " {");
+    writer.println("//> " + baseName.toLowerCase() + "-" + className.toLowerCase());
+    writer.println("  static class " + className + " extends " + baseName + " {");
 
-    writer.println(" " + className + "(" + fieldList + ") {");
+    writer.println("    " + className + "(" + fieldList + ") {");
 
     String[] fields = fieldList.split(", ");
     for (String field : fields) {
       String name = field.split(" ")[1];
-      writer.println(" this." + name + " = " + name + ";");
+      writer.println("      this." + name + " = " + name + ";");
     }
 
     writer.println("    }");
-    // visitor pattern
-    writer.println();
-    writer.println(" @Override");
-    writer.println(" <R> R accept(Visitor<R> visitor) {");
-    writer.println(" return visitor.visit" + className + baseName + "(this);");
-    writer.println(" }");
 
-    // fields
+    writer.println();
+    writer.println("    @Override");
+    writer.println("    <R> R accept(Visitor<R> visitor) {");
+    writer.println("      return visitor.visit" + className + baseName + "(this);");
+    writer.println("    }");
+
     writer.println();
     for (String field : fields) {
-      writer.println(" final " + field + ";");
+      writer.println("    final " + field + ";");
     }
-    writer.println(" }");
+    writer.println("  }");
   }
 }
