@@ -131,10 +131,25 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
   }
 
   @Override
+  public Void visitFunctionStmt(Stmt.Function stmt) {
+    LoxFunction function = new LoxFunction(stmt);
+    environment.define(stmt.name.lexeme, function);
+    return null;
+  }
+
+  @Override
   public Void visitPrintStmt(Stmt.Print stmt) {
     Object value = evaluate(stmt.expression);
     System.out.println(stringify(value));
     return null;
+  }
+
+  @Override
+  public Void visitReturnStmt(Stmt.Return stmt) {
+    Object value = null;
+    if (stmt.value != null) value = evaluate(stmt.value);
+
+    throw new Return(value);
   }
 
   @Override
@@ -215,10 +230,10 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         checkNumberOperands(expr.operator, left, right);
         return (double) left <= (double) right;
       case BANG_EQUAL:
-        checkNumberOperands(expr.operator, left, right);
+
         return !isEqual(left, right);
       case EQUAL_EQUAL:
-        checkNumberOperands(expr.operator, left, right);
+
         return isEqual(left, right);
       case MINUS:
         checkNumberOperands(expr.operator, left, right);
@@ -228,12 +243,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
           return (double) left + (double) right;
         }
         if (left instanceof String && right instanceof String) {
-          return left + (String) right;
+          return (String)left + (String)right;
         }
         throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings");
       case SLASH:
+        checkNumberOperands(expr.operator, left, right);
         return (double) left / (double) right;
       case STAR:
+        checkNumberOperands(expr.operator, left, right);
         return (double) left * (double) right;
     }
     return null;
