@@ -2,10 +2,13 @@ cmake_minimum_required(VERSION 3.26.2)
 
 set(project_name "clox")
 set(target_sources
-    main.c
+    
     memory.c
     chunk.c
     debug.c
+    value.c
+    main.c
+
 )
 list(TRANSFORM target_sources PREPEND "./")
 
