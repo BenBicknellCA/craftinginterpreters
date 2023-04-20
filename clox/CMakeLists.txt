@@ -8,6 +8,8 @@ set(target_sources
     debug.c
     value.c
     main.c
+    vm.c
+    
 
 )
 list(TRANSFORM target_sources PREPEND "./")
