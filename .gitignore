@@ -4,6 +4,10 @@ out/
 !**/src/test/**/out/
 .idea/**
 jlox/.idea/**
+clox/CMakeFiles/**
+Makefile
+cmake_install.cmake
+CMakeCache.txt
 ### Eclipse ###
 .apt_generated
 .classpath
