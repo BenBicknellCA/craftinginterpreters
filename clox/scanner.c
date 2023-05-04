@@ -144,6 +144,7 @@ static TokenType identifierType() {
         return checkKeyword(2, 2, "ue", TOKEN_TRUE);
       }
     }
+    break;
   case 'v':
     return checkKeyword(1, 2, "ar", TOKEN_VAR);
   case 'w':
