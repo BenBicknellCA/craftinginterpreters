@@ -2,7 +2,8 @@
 #define clox_memory_h
 
 #include "common.h"
-
+#define ALLOCATE(type, count)                                                  \
+  (type *)reallocate(NULL, 0, sizeof(type) * (count))
 #define GROW_ARRAY(type, pointer, oldCount, newCount)                          \
   (type *)reallocate(pointer, sizeof(type) * (oldCount),                       \
                      sizeof(type) * (newCount))

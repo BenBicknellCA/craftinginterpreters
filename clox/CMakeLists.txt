@@ -11,6 +11,7 @@ set(target_sources
     value.c
     main.c
     vm.c
+    object.c
     
 
 )
