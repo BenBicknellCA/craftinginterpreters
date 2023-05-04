@@ -15,6 +15,8 @@ typedef struct {
   bool panicMode;
 } Parser;
 
+Parser parser;
+
 typedef enum {
   PREC_NONE,
   PREC_ASSIGNMENT, // =
@@ -36,8 +38,6 @@ typedef struct {
   ParseFn infix;
   Precedence precedence;
 } ParseRule;
-
-Parser parser;
 
 Chunk *compilingChunk;
 
@@ -282,6 +282,6 @@ bool compile(const char *source, Chunk *chunk) {
   advance();
   expression();
   consume(TOKEN_EOF, "Expect end of expression");
-  return !parser.hadError;
   endCompiler();
+  return !parser.hadError;
 }
