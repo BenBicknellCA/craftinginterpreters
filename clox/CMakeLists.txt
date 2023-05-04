@@ -4,6 +4,8 @@ set(project_name "clox")
 set(target_sources
     
     memory.c
+    scanner.c
+    compiler.c
     chunk.c
     debug.c
     value.c
