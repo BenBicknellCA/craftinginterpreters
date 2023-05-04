@@ -12,7 +12,7 @@ set(target_sources
     main.c
     vm.c
     object.c
-    
+    table.c    
 
 )
 list(TRANSFORM target_sources PREPEND "./")
