@@ -272,7 +272,7 @@ static void and_(bool canAssign) {
   emitByte(OP_POP);
   parsePrecedence(PREC_AND);
 
-  pathJump(endJump);
+  patchJump(endJump);
 }
 
 static void binary(bool canAssign) {
