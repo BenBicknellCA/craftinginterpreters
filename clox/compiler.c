@@ -603,7 +603,6 @@ static void declaration() {
   } else {
     statement();
   }
-  statement();
   if (parser.panicMode)
     synchronize();
 }
