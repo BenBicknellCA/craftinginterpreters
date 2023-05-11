@@ -82,13 +82,14 @@ typedef struct {
   Obj obj;
   ObjString *name;
 } ObjClass;
+
 typedef struct {
   Obj obj;
   ObjClass *klass;
   Table fields;
 } ObjInstance;
-ObjClass *newClass(ObjString *name);
 
+ObjClass *newClass(ObjString *name);
 ObjClosure *newClosure(ObjFunction *function);
 ObjFunction *newFunction();
 ObjInstance *newInstance(ObjClass *klass);

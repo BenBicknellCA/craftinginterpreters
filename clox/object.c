@@ -68,6 +68,7 @@ static ObjString *allocateString(char *chars, int length, uint32_t hash) {
   push(OBJ_VAL(string));
   tableSet(&vm.strings, string, NIL_VAL);
   pop();
+
   return string;
 }
 static uint32_t hashString(const char *key, int length) {
@@ -121,6 +122,7 @@ void printObject(Value value) {
   switch (OBJ_TYPE(value)) {
   case OBJ_CLASS:
     printf("%s", AS_CLASS(value)->name->chars);
+    break;
   case OBJ_CLOSURE:
     printFunction(AS_CLOSURE(value)->function);
     break;
@@ -129,6 +131,7 @@ void printObject(Value value) {
     break;
   case OBJ_INSTANCE:
     printf("%s instance", AS_INSTANCE(value)->klass->name->chars);
+    break;
   case OBJ_NATIVE:
     printf("<native fn>");
     break;
