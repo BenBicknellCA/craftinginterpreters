@@ -65,7 +65,7 @@ static void markArray(ValueArray *array) {
 
 static void blackenObject(Obj *object) {
 #ifdef DEBUG_LOG_GC
-  printf("%p blacked ", (void *)object);
+  printf("%p blacken ", (void *)object);
   printValue(OBJ_VAL(object));
   printf("\n");
 #endif
